@@ -1,146 +1,36 @@
-<!doctype html>
-<html lang="ur" dir="rtl">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lucky Draw — Official</title>
-  <meta name="description" content="Lucky Draw — روزانہ کا قرعہ اندازی پلیٹ فارم" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucky Draw App</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Top Bar -->
-  <header class="topbar">
-    <div class="container">
-      <div class="brand">
-        <span class="logo">★</span>
-        <span class="brand-text">Lucky Draw</span>
-      </div>
-      <nav class="nav">
-        <a href="#" id="nav-home" class="active">ہوم</a>
-        <a href="#" id="nav-rules">اصول</a>
-        <a href="#" id="nav-support">سپورٹ</a>
-      </nav>
+  <div class="container">
+    <h1>🎉 Welcome to Lucky Draw 🎉</h1>
+
+    <div class="nav">
+      <a href="login.html">Login</a> |
+      <a href="signup.html">Signup</a>
     </div>
-  </header>
 
-  <main class="container">
-    <!-- AUTH SECTION -->
-    <section id="auth-section" class="card">
-      <h2>اکاؤنٹ بنائیں یا لاگ اِن کریں</h2>
-
-      <div class="tabs">
-        <button class="tab-button active" data-tab="signup-tab">نیا اکاؤنٹ</button>
-        <button class="tab-button" data-tab="login-tab">لاگ اِن</button>
-      </div>
-
-      <div id="signup-tab" class="tab-pane active">
-        <form id="signup-form" class="form">
-          <label>نام
-            <input type="text" id="su-name" placeholder="مثال: علی احمد" required>
-          </label>
-          <label>موبائل نمبر
-            <input type="tel" id="su-phone" placeholder="03xx-xxxxxxx" required>
-          </label>
-          <label>ای میل
-            <input type="email" id="su-email" placeholder="you@example.com" required>
-          </label>
-          <label>پاس ورڈ
-            <input type="password" id="su-password" minlength="6" required>
-          </label>
-          <button type="submit" class="btn primary">اکاؤنٹ بنائیں</button>
-        </form>
-      </div>
-
-      <div id="login-tab" class="tab-pane">
-        <form id="login-form" class="form">
-          <label>ای میل
-            <input type="email" id="li-email" required>
-          </label>
-          <label>پاس ورڈ
-            <input type="password" id="li-password" required>
-          </label>
-          <button type="submit" class="btn primary">لاگ اِن</button>
-        </form>
-      </div>
-
-      <p id="auth-message" class="note"></p>
-    </section>
-
-    <!-- DASHBOARD (hidden until login) -->
-    <section id="dashboard" class="card hidden">
-      <div class="dash-head">
-        <div>
-          <h2>خوش آمدید، <span id="userName">User</span> 👋</h2>
-          <p class="muted">آپ کا رجسٹریشن کامیاب ہوا۔ روزانہ قرعہ اندازی میں شامل رہیں۔</p>
-        </div>
-        <button id="logoutBtn" class="btn light">لاگ آؤٹ</button>
-      </div>
-
-      <div class="grid">
-        <div class="stat">
-          <div class="stat-value" id="statUsers">—</div>
-          <div class="stat-label">کل رجسٹرڈ یوزرز</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="statCountdown">00:00:00</div>
-          <div class="stat-label">اگلی قرعہ اندازی</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">₨ 200</div>
-          <div class="stat-label">کم از کم انویسٹمنٹ</div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="depositBtn" class="btn primary">Deposit</button>
-        <button id="withdrawBtn" class="btn outline">Withdraw</button>
-      </div>
-
-      <div class="card soft">
-        <h3>حالیہ شرکاء (ڈیمو)</h3>
-        <ul id="recentList" class="list"></ul>
-      </div>
-    </section>
-
-    <!-- RULES PAGE -->
-    <section id="rules" class="card hidden">
-      <h2>قوانین اور معلومات</h2>
-      <ul class="bullets">
-        <li>قرعہ اندازی روزانہ شام 8:00 بجے (PKT) ہوتی ہے۔</li>
-        <li>شمولیت کے لئے کم از کم رقم ₨200 ہے۔</li>
-        <li>رجسٹر یشن لازمی ہے۔</li>
-        <li>فی الحال ادائیگی فیچر ویری فکیشن کے بعد فعال ہوگا۔</li>
-      </ul>
-      <p class="muted">نوٹ: ابھی پلیٹ فارم پائلٹ مرحلے میں ہے۔ ادائیگی کے فیچرز جلد ریلیز ہوں گے۔</p>
-    </section>
-
-    <!-- SUPPORT PAGE -->
-    <section id="support" class="card hidden">
-      <h2>سپورٹ</h2>
-      <p>سوالات کے لئے WhatsApp / Email: <a href="mailto:support@example.com">support@example.com</a></p>
-    </section>
-  </main>
-
-  <!-- Modal -->
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>ویری فکیشن درکار</h3>
-      <p>Deposit/Withdraw فیچر جلد فعال ہوگا۔ جیسے ہی سسٹم منظور ہو گا آپ کو ایپ میں اطلاع مل جائے گی۔ شکریہ!</p>
-      <button id="closeModal" class="btn primary">ٹھیک ہے</button>
+    <div class="draw-box">
+      <h2>Click the button to pick a random winner!</h2>
+      <button onclick="pickWinner()">Pick Winner</button>
+      <p id="winner"></p>
     </div>
   </div>
 
-  <!-- Firebase SDKs (Modular) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+    const participants = ["Ali", "Ahmed", "Sara", "Fatima", "John", "Zubair"];
 
-  <!-- Your Firebase config (we'll add next) -->
-  <script src="firebase-config.js"></script>
-  <!-- App logic -->
-  <script src="app.js"></script>
+    function pickWinner() {
+      const randomIndex = Math.floor(Math.random() * participants.length);
+      const winner = participants[randomIndex];
+      document.getElementById("winner").textContent = "🎊 Winner: " + winner + " 🎊";
+    }
+  </script>
 </body>
 </html>
