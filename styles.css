@@ -1,0 +1,43 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Top Bar */
+.topbar {
+  background: #4a90e2;
+  padding: 15px;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.topbar .brand-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Navigation */
+.nav a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+/* Main Content */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
