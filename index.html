@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <title>DailyQurrah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; font-family: Arial, sans-serif; }
+    .navbar { background: #198754; }
+    .navbar-brand { color: #fff !important; font-weight: bold; }
+    .card { border-radius: 15px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
+    .btn-main { background: #198754; color: white; border-radius: 30px; }
+    .btn-main:hover { background: #145c32; }
+    #status { margin-top: 10px; font-weight: bold; }
+    .masked { color: #198754; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand">🌙 DailyQurrah</a>
+      <button id="logout-btn" class="btn btn-light btn-sm">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container my-4">
+
+    <!-- Auth Section -->
+    <div id="auth-section" class="card p-4">
+      <h3 class="mb-3 text-center">اکاؤنٹ بنائیں یا لاگ ان کریں</h3>
+      <input type="email" id="email" class="form-control mb-2" placeholder="ای میل">
+      <input type="password" id="password" class="form-control mb-2" placeholder="پاس ورڈ">
+      <button id="signup-btn" class="btn btn-main w-100 mb-2">Sign Up</button>
+      <button id="login-btn" class="btn btn-outline-success w-100">Login</button>
+      <div id="status" class="text-center"></div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="card p-4 d-none">
+      <h3 class="mb-3">👤 خوش آمدید</h3>
+      <p><strong>Total Members:</strong> <span id="member-count">0</span></p>
+
+      <h5>📜 Rules:</h5>
+      <ul>
+        <li>روزانہ کمیٹی انویسٹمنٹ: 200 روپے (10:00 PM – 6:00 PM تک)</li>
+        <li>روزانہ قرعہ اندازی: 8:00 PM</li>
+        <li>ہر جیتنے والے کو 2000 روپے</li>
+        <li>ہر Withdraw پر 10% سروس فیس</li>
+      </ul>
+
+      <h5>💳 Actions:</h5>
+      <button class="btn btn-main w-100 mb-2" onclick="deposit()">Deposit</button>
+      <button class="btn btn-main w-100 mb-2" onclick="withdraw()">Withdraw</button>
+      <button class="btn btn-main w-100 mb-2" onclick="luckyDraw()">Lucky Draw</button>
+
+      <div id="action-status" class="text-center mt-2"></div>
+    </div>
+
+    <!-- Lucky Draw Section -->
+    <div id="draw-section" class="card p-4 d-none">
+      <h3>🎉 آج کا قرعہ</h3>
+      <ul id="draw-list"></ul>
+      <button class="btn btn-outline-danger w-100" onclick="closeDraw()">Close</button>
+    </div>
+
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } 
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, set, get, child, update } 
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBsbe2-AY4GNXumAKJI7Oiksuw685-uVj4",
+      authDomain: "dailyqurra.firebaseapp.com",
+      projectId: "dailyqurra",
+      storageBucket: "dailyqurra.firebasestorage.app",
+      messagingSenderId: "907329016915",
+      appId: "1:907329016915:web:a92a6c43cd0527435da2a6",
+      measurementId: "G-306XPENQ5X",
+      databaseURL: "https://dailyqurra-default-rtdb.firebaseio.com/"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Elements
+    const statusDiv = document.getElementById("status");
+    const authSection = document.getElementById("auth-section");
+    const dashboard = document.getElementById("dashboard");
+    const memberCount = document.getElementById("member-count");
+    const actionStatus = document.getElementById("action-status");
+    const drawSection = document.getElementById("draw-section");
+    const drawList = document.getElementById("draw-list");
+
+    // Signup
+    document.getElementById("signup-btn").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          set(ref(db, "users/" + user.uid), {
+            email: user.email,
+            joined: new Date().toISOString()
+          });
+          statusDiv.innerHTML = "✅ اکاؤنٹ بن گیا: " + user.email;
+          showDashboard();
+          updateMemberCount();
+        })
+        .catch((error) => {
+          statusDiv.innerHTML = "❌ " + error.message;
+        });
+    });
+
+    // Login
+    document.getElementById("login-btn").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          statusDiv.innerHTML = "✅ لاگ ان ہو گیا: " + userCredential.user.email;
+          showDashboard();
+          updateMemberCount();
+        })
+        .catch((error) => {
+          statusDiv.innerHTML = "❌ " + error.message;
+        });
+    });
+
+    // Logout
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      signOut(auth).then(() => {
+        authSection.classList.remove("d-none");
+        dashboard.classList.add("d-none");
+      });
+    });
+
+    // Show Dashboard
+    function showDashboard() {
+      authSection.classList.add("d-none");
+      dashboard.classList.remove("d-none");
+    }
+
+    // Update Members Count
+    function updateMemberCount() {
+      get(child(ref(db), "users")).then(snapshot => {
+        if (snapshot.exists()) {
+          memberCount.innerText = Object.keys(snapshot.val()).length;
+        }
+      });
+    }
+
+    // Actions
+    window.deposit = () => { actionStatus.innerHTML = "💳 ویری فکیشن کے بعد یہ سہولت میسر ہوگی"; };
+    window.withdraw = () => { actionStatus.innerHTML = "💵 ویری فکیشن کے بعد یہ سہولت میسر ہوگی"; };
+    window.luckyDraw = () => {
+      drawSection.classList.remove("d-none");
+      drawList.innerHTML = `
+        <li class="masked">Ali K*** - 03******45</li>
+        <li class="masked">Sara M*** - 03******89</li>
+        <li class="masked">Ahmed Z*** - 03******21</li>
+      `;
+    };
+    window.closeDraw = () => { drawSection.classList.add("d-none"); };
+  </script>
+</body>
+</html>
