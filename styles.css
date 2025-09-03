@@ -1,0 +1,59 @@
+/* Urdu font */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Nastaliq Urdu', serif;
+  background: linear-gradient(135deg, #6dd5ed, #2193b0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+}
+
+.container {
+  text-align: center;
+}
+
+.card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  margin: auto;
+}
+
+.card h1 {
+  color: #2193b0;
+  margin-bottom: 15px;
+  font-size: 26px;
+}
+
+.card p {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ff6600;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #e65c00;
+  transform: scale(1.05);
+}
