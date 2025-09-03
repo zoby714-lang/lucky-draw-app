@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyQurrah | ڈیلی قرعہ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🎯</span>
+      <h1>DailyQurrah</h1>
+      <small>— کمیٹی بیس ڈرا ایپ</small>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html" class="active">ہوم</a>
+      <a href="signup.html" id="nav-signup">سائن اپ</a>
+      <a href="login.html" id="nav-login">لاگ اِن</a>
+      <button id="nav-logout" class="btn danger" style="display:none">لاگ آؤٹ</button>
+    </nav>
+  </header>
+
+  <!-- Auth Notice -->
+  <div id="auth-banner" class="banner info">
+    براہِ کرم پہلے <a href="signup.html">سائن اپ</a> یا <a href="login.html">لاگ اِن</a> کریں تاکہ آپ اپنی کمیٹی جمع کر سکیں۔
+  </div>
+
+  <!-- Main -->
+  <main class="container">
+    <!-- Stats / Hero -->
+    <section class="card hero">
+      <div>
+        <h2>خوش آمدید!</h2>
+        <p>
+          انویسٹمنٹ ونڈو روزانہ <b>10:00 PM</b> سے <b>6:00 PM</b> تک کھلی رہتی ہے۔  
+          قرعہ اندازی روزانہ <b>8:00 PM</b> پر ہوتی ہے — نیچے کاؤنٹ ڈاؤن دیکھیں۔
+        </p>
+        <div class="badges">
+          <span class="badge">کم از کم کمیٹی: 200</span>
+          <span class="badge">زیادہ سے زیادہ: فی ممبر 10 کمیٹیاں</span>
+          <span class="badge">سروس فیس: 10%</span>
+        </div>
+      </div>
+      <div class="countdown">
+        <h3>اگلا ڈرا کاؤنٹ ڈاؤن</h3>
+        <div id="countdown" class="timer">--:--:--</div>
+        <small>روزانہ شام 8:00 بجے</small>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="grid2">
+      <div class="card">
+        <h3>ڈپازٹ (کمیٹی ڈالیں)</h3>
+        <p>کم از کم 200 — لین دین لنک کے ذریعے ہو گا۔</p>
+        <button id="btn-deposit" class="btn primary">ڈپازٹ</button>
+      </div>
+
+      <div class="card">
+        <h3>وِدڈرا (ونر/والیٹ)</h3>
+        <p>رقم کی ادائیگی ویریفکیشن کے بعد — ایزی پیسہ/جاز کیش۔</p>
+        <button id="btn-withdraw" class="btn primary">وِدڈرا</button>
+      </div>
+    </section>
+
+    <!-- Live Draw (Dummy View for now) -->
+    <section class="card">
+      <h3>لائیو قرعہ اندازی (ڈیمو ویو)</h3>
+      <p>کسٹمرز کے نام/نمبر پرائیویسی کے لیے سٹار کے ساتھ:</p>
+      <ul class="list">
+        <li>Ali K*** — 03******45</li>
+        <li>Sara M*** — 03******12</li>
+        <li>Usman H*** — 03******78</li>
+        <li>Hina A*** — 03******33</li>
+      </ul>
+      <button id="btn-see-live" class="btn">لائیو دیکھیں</button>
+    </section>
+
+    <!-- Rules -->
+    <section class="card">
+      <h3>اصول و ضوابط</h3>
+      <ul class="list">
+        <li>انویسٹمنٹ ونڈو: روزانہ <b>10:00 PM → 6:00 PM</b></li>
+        <li>قرعہ اندازی: روزانہ <b>8:00 PM
