@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyQurrah | ڈیلی قرعہ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🎯</span>
+      <h1>DailyQurrah</h1>
+      <small>— کمیٹی بیس ڈرا ایپ</small>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html" class="active">ہوم</a>
+      <a href="signup.html" id="nav-signup">سائن اپ</a>
+      <a href="login.html" id="nav-login">لاگ اِن</a>
+      <button id="nav-logout" class="btn danger" style="display:none">لاگ آؤٹ</button>
+    </nav>
+  </header>
+
+  <!-- Auth Notice -->
+  <div id="auth-banner" class="banner info">
+    براہِ کرم پہلے <a href="signup.html">سائن اپ</a> یا <a href="login.html">لاگ اِن</a> کریں تاکہ آپ اپنی کمیٹی جمع کر سکیں۔
+  </div>
+
+  <!-- Main -->
+  <main class="container">
+    <!-- Stats / Hero -->
+    <section class="card hero">
+      <div>
+        <h2>خوش آمدید!</h2>
+        <p>
+          انویسٹمنٹ ونڈو روزانہ <b>10:00 PM</b> سے <b>6:00 PM</b> تک کھلی رہتی ہے۔  
+          قرعہ اندازی روزانہ <b>8:00 PM</b> پر ہوتی ہے — نیچے کاؤنٹ ڈاؤن دیکھیں۔
+        </p>
+        <div class="badges">
+          <span class="badge">کم از کم کمیٹی: 200</span>
+          <span class="badge">زیادہ سے زیادہ: فی ممبر 10 کمیٹیاں</span>
+          <span class="badge">سروس فیس: 10%</span>
+        </div>
+      </div>
+      <div class="countdown">
+        <h3>اگلا ڈرا کاؤنٹ ڈاؤن</h3>
+        <div id="countdown" class="timer">--:--:--</div>
+        <small>روزانہ شام 8:00 بجے</small>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="grid2">
+      <div class="card">
+        <h3>ڈپازٹ (کمیٹی ڈالیں)</h3>
+        <p>کم از کم 200 — لین دین لنک کے ذریعے ہو گا۔</p>
+        <button id="btn-deposit" class="btn primary">ڈپازٹ</button>
+      </div>
+
+      <div class="card">
+        <h3>وِدڈرا (ونر/والیٹ)</h3>
+        <p>رقم کی ادائیگی ویریفکیشن کے بعد — ایزی پیسہ/جاز کیش۔</p>
+        <button id="btn-withdraw" class="btn primary">وِدڈرا</button>
+      </div>
+    </section>
+
+    <!-- Live Draw (Dummy View for now) -->
+    <section class="card">
+      <h3>لائیو قرعہ اندازی (ڈیمو ویو)</h3>
+      <p>کسٹمرز کے نام/نمبر پرائیویسی کے لیے سٹار کے ساتھ:</p>
+      <ul class="list">
+        <li>Ali K*** — 03******45</li>
+        <li>Sara M*** — 03******12</li>
+        <li>Usman H*** — 03******78</li>
+        <li>Hina A*** — 03******33</li>
+      </ul>
+      <button id="btn-see-live" class="btn">لائیو دیکھیں</button>
+    </section>
+
+    <!-- Rules -->
+    <section class="card">
+      <h3>اصول و ضوابط</h3>
+      <ul class="list">
+        <li>انویسٹمنٹ ونڈو: روزانہ <b>10:00 PM → 6:00 PM</b></li>
+        <li>قرعہ اندازی: روزانہ <b>8:00 PM</b></li>
+        <li>کم از کم کمیٹی: <b>200</b> (200 پر 2000 وننگ)</li>
+        <li>ایک نمبر/ای میل پر زیادہ سے زیادہ <b>10</b> کمیٹیاں</li>
+        <li>تمام ادائیگیاں لنک کے ذریعے (ایزی پیسہ/جاز کیش) — <b>10% سروس فیس</b></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© 2025 DailyQurrah — All rights reserved.</small>
+  </footer>
+
+  <!-- Firebase (modular CDN v10) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // ✅ اپنی اصل Firebase config یہاں ڈالیں (Project Settings → Web app)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Init
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // UI elements
+    const banner = document.getElementById('auth-banner');
+    const logoutBtn = document.getElementById('nav-logout');
+    const navLogin = document.getElementById('nav-login');
+    const navSignup = document.getElementById('nav-signup');
+
+    // Auth guard (show/hide)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        banner.classList.remove('info');
+        banner.classList.add('success');
+        banner.innerHTML = `خوش آمدید: <b>${user.email}</b> — آپ ڈپازٹ/وِدڈرا بٹن استعمال کر سکتے ہیں۔`;
+        logoutBtn.style.display = 'inline-flex';
+        navLogin.style.display = 'none';
+        navSignup.style.display = 'none';
+      } else {
+        banner.classList.remove('success');
+        banner.classList.add('info');
+        banner.innerHTML = `براہِ کرم پہلے <a href="signup.html">سائن اپ</a> یا <a href="login.html">لاگ اِن</a> کریں تاکہ آپ اپنی کمیٹی جمع کر سکیں۔`;
+        logoutBtn.style.display = 'none';
+        navLogin.style.display = 'inline-flex';
+        navSignup.style.display = 'inline-flex';
+      }
+    });
+
+    // Logout
+    logoutBtn?.addEventListener('click', async () => {
+      await signOut(auth);
+      alert('آپ لاگ آؤٹ ہو چکے ہیں');
+      location.href = 'index.html';
+    });
+
+    // Deposit / Withdraw buttons (verification message)
+    const depositBtn = document.getElementById('btn-deposit');
+    const withdrawBtn = document.getElementById('btn-withdraw');
+    const seeLiveBtn = document.getElementById('btn-see-live');
+
+    function requireAuthThenMsg(msg) {
+      const user = auth.currentUser;
+      if (!user) {
+        alert('براہِ کرم پہلے لاگ اِن کریں۔');
+        location.href = 'login.html';
+        return;
+      }
+      alert(msg);
+    }
+
+    depositBtn?.addEventListener('click', () => {
+      requireAuthThenMsg('اعتماد کا شکریہ — ادائیگی اور قرعہ اندازی آپ کی رجسٹریشن کی تصدیق کے بعد ہوگی۔');
+    });
+
+    withdrawBtn?.addEventListener('click', () => {
+      requireAuthThenMsg('ویریفکیشن کے بعد وِدڈرا کی سہولت میسر ہوگی۔ شکریہ!');
+    });
+
+    seeLiveBtn?.addEventListener('click', () => {
+      alert('لائیو قرعہ اندازی 8:00 PM پر شروع ہوگی۔');
+    });
+
+    // Countdown to 8 PM (local)
+    const countdownEl = document.getElementById('countdown');
+    function next8pm() {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(20, 0, 0, 0); // 8:00 PM
+      if (target <= now) target.setDate(target.getDate() + 1);
+      return target;
+    }
+    function updateCountdown() {
+      const t = next8pm() - new Date();
+      const h = String(Math.floor(t / (1000*60*60))).padStart(2,'0');
+      const m = String(Math.floor((t % (1000*60*60)) / (1000*60))).padStart(2,'0');
+      const s = String(Math.floor((t % (1000*60)) / 1000)).padStart(2,'0');
+      countdownEl.textContent = `${h}:${m}:${s}`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
