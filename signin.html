@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signin - DailyQurra</title>
+</head>
+<body>
+  <h2>Login</h2>
+  <form id="signinForm">
+    <input type="email" id="signinEmail" placeholder="Enter Email" required>
+    <input type="password" id="signinPassword" placeholder="Enter Password" required>
+    <button type="submit">Sign In</button>
+  </form>
+
+  <p id="signinMessage"></p>
+
+  <!-- Firebase Config -->
+  <script type="module" src="firebase-config.js"></script>
+
+  <!-- Signin Logic -->
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import { signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+    const form = document.getElementById("signinForm");
+    const message = document.getElementById("signinMessage");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("signinEmail").value;
+      const password = document.getElementById("signinPassword").value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        if (userCredential.user.emailVerified) {
+          message.innerText = "✅ Login successful!";
+          window.location.href = "dashboard.html"; 
+        } else {
+          message.innerText = "⚠️ Please verify your email first.";
+        }
+      } catch (error) {
+        message.innerText = "❌ " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
