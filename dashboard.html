@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <header class="topbar">
+    <div class="brand">DailyQurrah</div>
+    <nav>
+      <button id="logoutBtn" class="btn danger small">لاگ آؤٹ</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h3>خوش آمدید</h3>
+        <p id="whoami" class="muted">لوڈ ہو رہا ہے…</p>
+
+        <form id="profileForm" class="form mt">
+          <h4>پروفائل</h4>
+          <label>مکمل نام
+            <input id="fullName" type="text" placeholder="مکمل نام" />
+          </label>
+          <label>فون نمبر
+            <input id="phone" type="tel" placeholder="03xx-xxxxxxx" />
+          </label>
+          <button class="btn primary" type="submit">پروفائل محفوظ کریں</button>
+          <p id="profileMsg" class="msg"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>میری انٹریز</h3>
+        <form id="noteForm" class="form">
+          <label>نوٹ/ریکارڈ
+            <input id="noteText" type="text" placeholder="کچھ لکھیں…" />
+          </label>
+          <button class="btn" type="submit">محفوظ کریں</button>
+        </form>
+        <ul id="noteList" class="list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
