@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لاگ ان</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>لاگ ان</h2>
+    <input type="email" id="loginEmail" placeholder="ای میل درج کریں">
+    <input type="password" id="loginPassword" placeholder="پاس ورڈ درج کریں">
+    <button id="loginBtn">لاگ ان</button>
+    <p>اکاؤنٹ نہیں ہے؟ <a href="signup.html">سائن اپ کریں</a></p>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBsbe2-AY4GNXumAKJI7Oiksuw685-uVj4",
+      authDomain: "dailyqurra.firebaseapp.com",
+      databaseURL: "https://dailyqurra-default-rtdb.firebaseio.com",
+      projectId: "dailyqurra",
+      storageBucket: "dailyqurra.firebasestorage.app",
+      messagingSenderId: "907329016915",
+      appId: "1:907329016915:web:a92a6c43cd0527435da2a6",
+      measurementId: "G-306XPENQ5X"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          if (userCredential.user.emailVerified) {
+            alert("لاگ ان کامیاب!");
+            window.location.href = "index.html";
+          } else {
+            alert("براہ کرم پہلے ای میل ویریفائی کریں۔");
+          }
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
