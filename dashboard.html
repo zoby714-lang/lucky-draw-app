@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ڈیش بورڈ - DailyQurrah</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">📊</span>
+      <h1>DailyQurrah</h1>
+    </div>
+    <nav class="nav">
+      <a href="index.html">ہوم</a>
+      <button id="logout-btn" class="btn danger small">لاگ آؤٹ</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>خوش آمدید 🎉</h2>
+      <p id="user-info">آپ لاگ اِن ہیں بطور: ...</p>
+    </section>
+
+    <section class="card">
+      <h3>📅 ڈیلی قرعہ کا کاؤنٹ ڈاؤن</h3>
+      <div id="countdown" class="countdown">00:00:00</div>
+    </section>
+
+    <section class="card">
+      <h3>💰 میری کمیٹیاں</h3>
+      <p>ابھی تک کوئی کمیٹی نہیں ڈالی گئی۔</p>
+      <button class="btn primary">کمیٹی ڈالیں</button>
+    </section>
+
+    <section class="card">
+      <h3>🏆 آج کے ونرز</h3>
+      <ul id="winners">
+        <li>Ali K*** - 03******45</li>
+        <li>Fatima M*** - 03******89</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© 2025 DailyQurrah</small>
+  </footer>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // لاگ ان یوزر چیک کریں
+    const userInfo = document.getElementById('user-info');
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userInfo.textContent = "آپ لاگ اِن ہیں بطور: " + user.email;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // لاگ آؤٹ
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await signOut(auth);
+      alert("آپ لاگ آؤٹ ہوگئے");
+      window.location.href = "login.html";
+    });
+
+    // کاؤنٹ ڈاؤن (روزانہ 8PM تک)
+    function updateCountdown() {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(20, 0, 0, 0); // 8:00 PM
+
+      if (now > target) {
+        target.setDate(target.getDate() + 1);
+      }
+
+      const diff = target - now;
+      const h = String(Math.floor(diff / 1000 / 60 / 60)).padStart(2, '0');
+      const m = String(Math.floor(diff / 1000 / 60) % 60).padStart(2, '0');
+      const s = String(Math.floor(diff / 1000) % 60).padStart(2, '0');
+
+      document.getElementById('countdown').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
