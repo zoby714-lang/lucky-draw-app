@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Signin</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff7e5f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #e76b51;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>لاگ ان کریں</h2>
+    <form id="signinForm">
+      <input type="email" id="signinEmail" placeholder="ای میل" required>
+      <input type="password" id="signinPassword" placeholder="پاس ورڈ" required>
+      <button type="submit">سائن ان</button>
+    </form>
+    <p>اکاؤنٹ نہیں ہے؟ <a href="signup.html">سائن اپ کریں</a></p>
+  </div>
+
+  <script type="module" src="signin.js"></script>
+</body>
+</html>
