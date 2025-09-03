@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucky Draw App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Welcome to Lucky Draw App 🎉</h1>
+    <nav>
+      <a href="signup.html">Sign Up</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>How it Works</h2>
+      <p>Sign up, log in, and join the lucky draw to win amazing prizes!</p>
+      <button id="drawBtn">Start Lucky Draw</button>
+    </section>
+
+    <section id="resultSection" style="display: none;">
+      <h2>🎊 Congratulations! 🎊</h2>
+      <p id="winnerText"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Lucky Draw App. All rights reserved.</p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+    // 🔹 اپنی Firebase config یہاں ڈالیں
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // Lucky Draw Example
+    const drawBtn = document.getElementById("drawBtn");
+    const resultSection = document.getElementById("resultSection");
+    const winnerText = document.getElementById("winnerText");
+
+    drawBtn.addEventListener("click", () => {
+      const participants = ["Ali", "Sara", "Usman", "Hina", "Ahmed"];
+      const winner = participants[Math.floor(Math.random() * participants.length)];
+      winnerText.textContent = `The lucky winner is: ${winner}`;
+      resultSection.style.display = "block";
+    });
+  </script>
+</body>
+</html>
