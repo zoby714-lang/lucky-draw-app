@@ -1,101 +1,0 @@
-<!DOCTYPE html>
-<html lang="ur" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>رجسٹریشن – DailyQurrah</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="firebase-config.js"></script>
-</head>
-<body class="app-body">
-  <div class="auth-card slide-up">
-    <h2>نیا اکاؤنٹ بنائیں</h2>
-    <form id="signupForm" class="form">
-      <label>ای میل
-        <input id="signupEmail" type="email" placeholder="you@example.com" required />
-      </label>
-      <label>پاس ورڈ
-        <div class="pw-wrap">
-          <input id="signupPassword" type="password" placeholder="کم از کم 6 کریکٹر" required />
-          <button type="button" class="eye" id="eyeUp" aria-label="Show/Hide Password">👁️</button>
-        </div>
-      </label>
-      <label>موبائل نمبر (اختیاری)
-        <input id="signupPhone" type="tel" placeholder="03XXXXXXXXX" />
-      </label>
-      <label>ریفرل کوڈ (اختیاری)
-        <input id="signupRef" type="text" placeholder="ریفرل کوڈ" />
-      </label>
-      <button class="btn primary" type="submit">رجسٹر</button>
-      <p class="muted small">رجسٹریشن کے بعد ویری فکیشن ای میل بھیجی جائے گی۔</p>
-    </form>
-    <div id="msgUp" class="msg"></div>
-    <div class="switch-link">اکاؤنٹ ہے؟ <a href="signin.html">سائن اِن کریں</a></div>
-  </div>
-
-  <script type="module">
-    import { app } from './firebase-config.js';
-    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp, increment } 
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // ریفرل param اٹھانا
-    const url = new URL(location.href);
-    const refParam = url.searchParams.get('ref') || '';
-    const refInput = document.getElementById('signupRef');
-    if(refParam) refInput.value = refParam;
-
-    // پاس ورڈ eye
-    const eyeUp = document.getElementById('eyeUp');
-    const pwUp  = document.getElementById('signupPassword');
-    eyeUp.addEventListener('click', () => {
-      pwUp.type = pwUp.type === 'password' ? 'text' : 'password';
-    });
-
-    const msgUp = document.getElementById('msgUp');
-    const form = document.getElementById('signupForm');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msgUp.textContent = "آپ کا اکاؤنٹ بنایا جا رہا ہے…";
-      try {
-        const email = document.getElementById('signupEmail').value.trim();
-        const pass  = document.getElementById('signupPassword').value;
-        const phone = document.getElementById('signupPhone').value.trim();
-        const ref   = document.getElementById('signupRef').value.trim();
-
-        const { user } = await createUserWithEmailAndPassword(auth, email, pass);
-        await updateProfile(user, { displayName: email.split('@')[0] });
-
-        // یوزر پروفائل Firestore میں
-        await setDoc(doc(db, "users", user.uid), {
-          email, phone: phone || null, ref: ref || null,
-          createdAt: serverTimestamp(),
-          role: "member",
-          kycVerified: false,
-          depositEnabled: false,
-          withdrawEnabled: false
-        });
-
-        // اختیاری: app-meta/metrics usersCount++
-        await setDoc(doc(db, "app-meta", "metrics"), { usersCount: increment(1) }, { merge: true });
-
-        // ای میل ویری فکیشن
-        await sendEmailVerification(user);
-        msgUp.classList.add('ok');
-        msgUp.textContent = "ویری فکیشن ای میل بھیج دی گئی ہے۔ براہِ کرم ای میل کنفرم کر کے سائن اِن کریں۔";
-
-        // 2s بعد سائن اِن پر لے جائیں
-        setTimeout(()=> location.href = "signin.html", 1500);
-      } catch (err) {
-        msgUp.classList.add('err');
-        msgUp.textContent = "Error: " + (err.message || err);
-      }
-    });
-  </script>
-</body>
-</html>
