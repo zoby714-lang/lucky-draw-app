@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyQurrah – کمیٹی ایپ</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <header class="topbar glass">
+    <div class="brand-mini">
+      <div class="logo-dot"></div>
+      <span>DailyQurrah</span>
+    </div>
+    <nav class="nav-actions">
+      <a class="btn ghost" href="signin.html">سائن اِن</a>
+      <a class="btn primary" href="signup.html">رجسٹریشن</a>
+    </nav>
+  </header>
+
+  <section class="hero card fade-in">
+    <div class="hero-text">
+      <h1>کمیٹی ایپ — محفوظ، سادہ، شفاف</h1>
+      <p class="muted">
+        روزانہ 10PM–6PM ڈپازٹ ونڈو، 8PM لائیو قرعہ اندازی، اور وِنر ودڈرا پر 10% سروس فیس۔
+        تمام ٹرانزیکشنز مستقبل میں لنک بیسڈ (ایزی پیسہ/جاز کیش) ہوں گی۔
+      </p>
+      <div class="btn-group">
+        <a class="btn primary" href="signup.html">نیا اکاؤنٹ بنائیں</a>
+        <a class="btn ghost" href="signin.html">پہلے سے ممبر؟ سائن اِن</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" id="statUsers">—</div>
+        <div class="stat-label">رجسٹرڈ ممبرز</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10PM–6PM</div>
+        <div class="stat-label">انویسٹمنٹ ونڈو</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8:00 PM</div>
+        <div class="stat-label">روزانہ قرعہ اندازی</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-grid">
+    <div class="card">
+      <h3>اہم قواعد</h3>
+      <ul>
+        <li>کم از کم کمیٹی: 200 روپے۔</li>
+        <li>200 پر 2000 کی وننگ (ڈرا کے ذریعے)۔</li>
+        <li>ہر یوزر زیادہ سے زیادہ 10 کمیٹیاں ڈال سکتا ہے۔</li>
+        <li>ودڈرا پر 10% سروس فیس (صرف ونر)۔</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>پرائیویسی</h3>
+      <p class="muted">ڈرا میں نام اور نمبر ماسک ہو کر دکھائے جائیں گے (مثال: علی ک***، 03******45)۔</p>
+    </div>
+    <div class="card">
+      <h3>آنے والی سہولت</h3>
+      <p class="muted">لنک بیسڈ ڈپازٹ/ودڈرا (ایزی پیسہ/جازکیش) ویریفکیشن کے بعد فعال ہو گی۔</p>
+    </div>
+  </section>
+
+  <footer class="footer muted">
+    © 2024 DailyQurrah — کمیٹی ایپ
+  </footer>
+
+  <script type="module">
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { app } from "./firebase-config.js";
+    const db = getFirestore(app);
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "app-meta", "metrics"));
+        const total = snap.exists() ? (snap.data().usersCount ?? "—") : "—";
+        document.getElementById("statUsers").textContent = total;
+      } catch(e){ /* silent */ }
+    })();
+  </script>
+</body>
+</html>
