@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سائن اِن – DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-card slide-up">
+    <h2>سائن اِن کریں</h2>
+    <form id="signinForm" class="form">
+      <label>ای میل
+        <input id="signinEmail" type="email" placeholder="you@example.com" required />
+      </label>
+      <label>پاس ورڈ
+        <div class="pw-wrap">
+          <input id="signinPassword" type="password" placeholder="آپ کا پاس ورڈ" required />
+          <button type="button" class="eye" id="eyeIn" aria-label="Show/Hide Password">👁️</button>
+        </div>
+      </label>
+      <button class="btn primary" type="submit">سائن اِن</button>
+    </form>
+    <div id="msgIn" class="msg"></div>
+    <div class="switch-link">اکاؤنٹ نہیں؟ <a href="signup.html">رجسٹریشن کریں</a></div>
+  </div>
+
+  <script type="module">
+    import { app } from './firebase-config.js';
+    import { getAuth, signInWithEmailAndPassword, sendEmailVerification } 
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const auth = getAuth(app);
+
+    const eyeIn = document.getElementById('eyeIn');
+    const pwIn  = document.getElementById('signinPassword');
+    eyeIn.addEventListener('click', ()=> {
+      pwIn.type = pwIn.type === 'password' ? 'text' : 'password';
+    });
+
+    const msgIn = document.getElementById('msgIn');
+    document.getElementById('signinForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      msgIn.textContent = "سائن اِن ہو رہا ہے…";
+      try {
+        const email = document.getElementById('signinEmail').value.trim();
+        const pass  = document.getElementById('signinPassword').value;
+        const { user } = await signInWithEmailAndPassword(auth, email, pass);
+
+        // اگر ای میل ویری فائیڈ نہیں ہے تو ریمائنڈر
+        if (!user.emailVerified) {
+          await sendEmailVerification(user);
+          msgIn.classList.add('warn');
+          msgIn.textContent = "ای میل ویری فائیڈ کریں۔ ویری فکیشن میل دوبارہ بھیج دی گئی ہے۔";
+          return;
+        }
+        // ڈیش بورڈ پر لے جائیں
+        location.href = "dashboard.html";
+      } catch (err) {
+        msgIn.classList.add('err');
+        msgIn.textContent = "Error: " + (err.message || err);
+      }
+    });
+  </script>
+</body>
+</html>
