@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کمیٹی ڈیش بورڈ</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="firebase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <header class="dashboard-header">
+    <h1>🎉 کمیٹی ڈیش بورڈ</h1>
+    <p>خوش آمدید! آپ کا اکاؤنٹ کامیابی سے سائن اِن ہوگیا۔</p>
+  </header>
+
+  <!-- Countdown Clock -->
+  <section class="countdown-section">
+    <h2>ڈپازٹ کا وقت ختم ہونے تک:</h2>
+    <div id="countdown" class="countdown"></div>
+  </section>
+
+  <!-- Scrolling Names -->
+  <section class="names-section">
+    <h2>رجسٹرڈ کسٹمرز</h2>
+    <div class="scrolling-names" id="scrollingNames"></div>
+  </section>
+
+  <!-- Winner Section -->
+  <section class="winner-section">
+    <h2>🎁 آج کے ونر</h2>
+    <div id="winnerBox" class="winner-box">ابھی قرعہ اندازی باقی ہے</div>
+  </section>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
