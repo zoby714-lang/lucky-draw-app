@@ -1,0 +1,36 @@
+<!-- signup.html -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Signup – DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="auth-check.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-card">
+    <div class="brand">
+      <h1>DailyQurrah</h1>
+      <p class="muted">اکاؤنٹ رجسٹر کریں</p>
+    </div>
+
+    <input id="signupName" type="text" placeholder="نام" />
+    <input id="signupPhone" type="text" placeholder="فون نمبر (03XXXXXXXXX)" />
+    <input id="signupEmail" type="email" placeholder="ای میل" />
+
+    <div class="password-box">
+      <input id="signupPassword" type="password" placeholder="پاس ورڈ" />
+      <span id="toggleSignupPass" class="password-toggle">👁</span>
+    </div>
+
+    <button id="signupBtn" class="btn primary" style="margin-top:12px">سائن اَپ</button>
+
+    <p style="margin-top:8px">پہلے سے اکاؤنٹ ہے؟ <a href="signin.html">سائن اِن کریں</a></p>
+
+    <div id="signupMsg" class="note" style="display:none"></div>
+  </div>
+
+  <script type="module" src="signup.js"></script>
+</body>
+</html>
