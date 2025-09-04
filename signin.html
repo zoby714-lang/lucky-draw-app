@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>سائن اِن — DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-shell">
+    <div class="auth-card card fade-in">
+      <h2>سائن اِن</h2>
+      <p class="muted">ای میل اور پاس ورڈ درج کریں۔</p>
+
+      <form id="signinForm" class="form">
+        <label>ای میل
+          <input id="signinEmail" class="input" type="email" placeholder="you@example.com" required />
+        </label>
+        <label>پاس ورڈ
+          <div class="pass-wrap">
+            <input id="signinPassword" class="input" type="password" minlength="6" required />
+            <button type="button" class="eye" data-target="signinPassword" aria-label="Show/Hide">👁️</button>
+          </div>
+        </label>
+
+        <button id="signinBtn" class="btn primary" type="submit">سائن اِن</button>
+        <div id="signinMsg" class="msg"></div>
+      </form>
+
+      <div class="switch-auth">
+        نیا ہیں؟ <a href="signup.html">اکاؤنٹ بنائیں</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="signin.js"></script>
+</body>
+</html>
