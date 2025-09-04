@@ -1,0 +1,101 @@
+/* style.css */
+:root{
+  --green:#0f9b0f;
+  --green-dark:#0b6f0b;
+  --bg: #0a0f0a;
+  --card:#ffffff;
+  --muted:#6b7280;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(135deg, var(--green) 0%, #0a3a0a 55%, #000 100%);
+  color:#fff;
+  min-height:100vh;
+  text-align:center;
+  direction: rtl;
+}
+
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.app-body{display:flex;align-items:center;justify-content:center;padding:24px}
+
+.card, .auth-card, .dashboard{
+  width:min(960px, 92vw);
+  margin: 20px auto;
+  background: var(--card);
+  color:#111;
+  border-radius:18px;
+  padding:24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+.brand{
+  display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:10px
+}
+.brand h1{margin:0;font-size:32px;color:var(--green-dark)}
+.muted{color:var(--muted);margin:0}
+
+.grid{
+  display:grid;gap:16px;margin-top:18px
+}
+.grid-2{grid-template-columns:1fr 1fr}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+
+input{
+  width:100%;padding:12px 14px;margin-top:10px;border:1px solid #e5e7eb;border-radius:10px;font-size:16px
+}
+.password-box{position:relative}
+.password-toggle{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  cursor:pointer;user-select:none;color:#555
+}
+
+.btn{
+  display:inline-block;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;
+  font-size:16px;transition:.2s transform ease,.2s background ease
+}
+.btn:active{transform:scale(.98)}
+
+.btn.primary{background:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green-dark)}
+.btn.ghost{background:transparent;border:2px solid var(--green);color:var(--green)}
+.btn.danger{background:#d9534f;color:#fff}
+
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px
+}
+.topbar .logo{font-weight:700;color:var(--green-dark)}
+.nav-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+.statbar{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 6px
+}
+.stat{
+  background:#f3f6f3;border-radius:12px;padding:12px
+}
+.stat .num{font-weight:700;font-size:18px}
+.stat .label{color:#667085;font-size:12px}
+
+.scroll-box{
+  background:#f8faf8;border:1px dashed #cbd5c0;color:#0f172a;
+  border-radius:12px;padding:14px;height:58px;display:flex;align-items:center;justify-content:center;
+  font-weight:700
+}
+
+.winner-box{
+  margin-top:12px;font-weight:800;color:var(--green-dark);font-size:18px
+}
+
+.note{
+  background:#f0fff0;border-left:6px solid var(--green);padding:12px;border-radius:10px;margin-top:10px;color:#064e3b
+}
+
+.rules{
+  text-align:right;background:#f8fff8;border-radius:12px;padding:14px;margin-top:8px;border:1px solid #e7f3e7
+}
+.rules h3{margin:6px 0 10px}
+.rules li{margin:6px 0}
