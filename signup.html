@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>رجسٹریشن — DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-shell">
+    <div class="auth-card card fade-in">
+      <h2>نیا اکاؤنٹ بنائیں</h2>
+      <p class="muted">اپنا نام، موبائل، ای میل اور پاس ورڈ درج کریں۔</p>
+
+      <form id="signupForm" class="form">
+        <label>نام
+          <input id="signupName" class="input" type="text" placeholder="مثال: علی احمد" required />
+        </label>
+        <label>موبائل (اختیاری)
+          <input id="signupPhone" class="input" type="tel" placeholder="03XXXXXXXXX" />
+        </label>
+        <label>ای میل
+          <input id="signupEmail" class="input" type="email" placeholder="you@example.com" required />
+        </label>
+        <label>پاس ورڈ
+          <div class="pass-wrap">
+            <input id="signupPassword" class="input" type="password" minlength="6" required />
+            <button type="button" class="eye" data-target="signupPassword" aria-label="Show/Hide">👁️</button>
+          </div>
+        </label>
+        <label class="check">
+          <input id="agree" type="checkbox" required />
+          <span>میں قواعد و ضوابط سے متفق ہوں</span>
+        </label>
+
+        <button id="signupBtn" class="btn primary" type="submit">رجسٹر کریں</button>
+        <div id="signupMsg" class="msg"></div>
+      </form>
+
+      <div class="switch-auth">
+        پہلے سے ممبر؟ <a href="signin.html">سائن اِن کریں</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="signup.js"></script>
+</body>
+</html>
