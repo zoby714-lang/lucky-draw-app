@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ڈیش بورڈ – DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <header class="topbar">
+    <div class="brand-mini">DailyQurrah</div>
+    <nav class="actions">
+      <a class="btn ghost" id="logoutBtn">لاگ آؤٹ</a>
+    </nav>
+  </header>
+
+  <main class="container fade-in">
+    <section class="grid">
+      <div class="card">
+        <h3>آپ کا اکاؤنٹ</h3>
+        <div id="uEmail" class="muted">—</div>
+        <div class="badge warn" id="verifyBadge">ای میل ویری فائیڈ نہیں</div>
+      </div>
+
+      <div class="card">
+        <h3>ٹائمنگز</h3>
+        <p class="muted">انویسٹمنٹ: روزانہ 10:00 PM تا 6:00 PM</p>
+        <p class="muted">قرعہ اندازی: روزانہ 8:00 PM</p>
+      </div>
+
+      <div class="card">
+        <h3>آج کا ڈرا</h3>
+        <div id="drawCountdown" class="big-num">—</div>
+        <p class="muted small">ڈرا 8:00 PM پر ہوگا</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>ڈپازٹ / ودڈرا</h3>
+      <div class="flex">
+        <button class="btn primary" id="depositBtn">ڈپازٹ</button>
+        <button class="btn ghost" id="withdrawBtn">ودڈرا</button>
+      </div>
+      <p id="txnMsg" class="msg"></p>
+    </section>
+
+    <section class="card">
+      <h3>لائیو ڈرا ویو</h3>
+      <ul id="liveList" class="list">
+        <!-- ڈمی ماسکڈ انٹریز -->
+      </ul>
+    </section>
+
+    <section class="card">
+      <h3>رولز & پالیسی</h3>
+      <ul class="rules">
+        <li>کم از کم کمیٹی 200۔ وننگ 200 پر 2000۔</li>
+        <li>ہر یوزر زیادہ سے زیادہ 10 کمیٹیاں ڈال سکتا ہے۔</li>
+        <li>ڈپازٹ/ودڈرا لنک ویریفکیشن کے بعد فعال ہوگا۔</li>
+        <li>ونر ودڈرا پر 10% سروس فیس۔</li>
+        <li>نام اور نمبر ڈرا میں اسٹار کے ساتھ دکھائے جائیں گے۔</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="module">
+    import { app } from './firebase-config.js';
+    import { getAuth, onAuthStateChanged, signOut, sendEmailVerification } 
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc } 
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const uEmail = document.getElementById('uEmail');
+    const verifyBadge = document.getElementById('verifyBadge');
+    const txnMsg = document.getElementById('txnMsg');
+    const liveList = document.getElementById('liveList');
+
+    // ماسکڈ ڈمی یوزرز
+    const dummy = ["Ali K*** (03******21)","Zara S*** (03******09)","Usman T*** (03******77)","Maryam A*** (03******45)"];
+    dummy.forEach(x=>{
+      const li = document.createElement('li');
+      li.textContent = x;
+      liveList.appendChild(li);
+    });
+
+    // ڈرا کا سادہ countdown (8pm today)
+    function msToTime(ms){
+      const h = Math.floor(ms/3.6e6), m = Math.floor(ms%3.6e6/6e4), s=Math.floor(ms%6e4/1e3);
+      return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+    function next8pm(){
+      const n=new Date(); const t=new Date();
+      t.setHours(20,0,0,0);
+      if(n>t){ t.setDate(t.getDate()+1); }
+      return t;
+    }
+    const out = document.getElementById('drawCountdown');
+    setInterval(()=>{ const ms=next8pm()-new Date(); out.textContent = ms>0? msToTime(ms): "ڈرا ٹائم"; }, 1000);
+
+    // Auth state
+    onAuthStateChanged(auth, async (user)=>{
+      if(!user){ location.href="signin.html"; return; }
+      uEmail.textContent = user.email || "—";
+      if(user.emailVerified){ verifyBadge.classList.remove('warn'); verifyBadge.classList.add('ok'); verifyBadge.textContent="ای میل ویری فائیڈ"; }
+      // لوڈ یوزر پروفائل (future use)
+      try {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        // snap.data() اگر چاہیے تو یہاں استعمال
+      } catch(e){}
+    });
+
+    // Actions
+    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+      await signOut(auth);
+      location.href="signin.html";
+    });
+
+    document.getElementById('depositBtn').addEventListener('click', ()=>{
+      txnMsg.className="msg warn";
+      txnMsg.textContent = "اعتماد کا شکریہ! ادائیگی اور ڈپازٹ ویری فکیشن کے بعد فعال ہوگا۔";
+    });
+
+    document.getElementById('withdrawBtn').addEventListener('click', ()=>{
+      txnMsg.className="msg warn";
+      txnMsg.textContent = "ودڈرا ویری فکیشن کے بعد فعال ہوگا۔";
+    });
+  </script>
+</body>
+</html>
