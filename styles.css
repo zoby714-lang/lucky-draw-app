@@ -1,0 +1,133 @@
+/* عمومی سیٹنگ */
+body.app-body {
+  font-family: "Noto Nastaliq Urdu", "Arial", sans-serif;
+  background: linear-gradient(135deg, #e6f7ee, #ffffff);
+  margin: 0;
+  padding: 0;
+  color: #222;
+  direction: rtl;
+}
+
+/* ہیڈر */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a7f4c;
+  color: white;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+.app-header .btn.danger {
+  background: #ff4d4d;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+.app-header .btn.danger:hover {
+  background: #e60000;
+}
+
+/* مرکزی کارڈ */
+.dashboard-card {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* خوش آمدید */
+#welcomeUser {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #1a7f4c;
+}
+
+/* Countdown Box */
+.countdown-box {
+  text-align: center;
+  background: #f0fff6;
+  border: 2px solid #1a7f4c;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+.countdown-timer {
+  font-size: 22px;
+  font-weight: bold;
+  color: #0d5d32;
+  margin-top: 10px;
+}
+
+/* Scrolling Names */
+.scrolling-section {
+  margin: 20px 0;
+  text-align: center;
+}
+.scroll-box {
+  font-size: 18px;
+  font-weight: bold;
+  background: #e8fff0;
+  border: 2px dashed #1a7f4c;
+  border-radius: 50px;
+  padding: 12px 20px;
+  margin-top: 10px;
+  color: #0d5d32;
+  min-height: 40px;
+}
+
+/* Winner Box */
+.winner-section {
+  margin: 20px 0;
+  text-align: center;
+}
+.winner-box {
+  font-size: 22px;
+  font-weight: bold;
+  background: #fff9e6;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 10px;
+  color: #e67e00;
+  box-shadow: 0 2px 10px rgba(255,193,7,0.4);
+}
+
+/* Info Card */
+.info-card {
+  margin-top: 25px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+.info-card h3 {
+  margin-top: 0;
+  color: #1a7f4c;
+}
+.info-card ul {
+  margin: 0;
+  padding-right: 20px;
+}
+.info-card li {
+  margin: 8px 0;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 1.2s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
