@@ -1,0 +1,32 @@
+<!-- signin.html -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Signin – DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="auth-check.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-card">
+    <div class="brand">
+      <h1>DailyQurrah</h1>
+      <p class="muted">سائن اِن کریں</p>
+    </div>
+
+    <input id="signinEmail" type="email" placeholder="ای میل" />
+    <div class="password-box">
+      <input id="signinPassword" type="password" placeholder="پاس ورڈ" />
+      <span id="toggleSigninPass" class="password-toggle">👁</span>
+    </div>
+
+    <button id="signinBtn" class="btn primary" style="margin-top:12px">سائن اِن</button>
+    <p style="margin-top:8px">نیا اکاؤنٹ؟ <a href="signup.html">سائن اَپ کریں</a></p>
+
+    <div id="signinMsg" class="note" style="display:none"></div>
+  </div>
+
+  <script type="module" src="signin.js"></script>
+</body>
+</html>
