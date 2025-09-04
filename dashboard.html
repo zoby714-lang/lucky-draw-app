@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ڈیلی قرعہ – ڈیش بورڈ</title>
+
+  <!-- آپ کی موجودہ گلوبل اسٹائل -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase App init (آپ کی موجودہ فائل) -->
+  <script type="module" src="firebase-config.js"></script>
+
+  <!-- Minimal inline styles (صرف اس پیج کے نئے سیکشنز کے لیے) -->
+  <style>
+    .wrap {max-width: 980px; margin: 0 auto; padding: 16px;}
+    header.dh {display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:16px;}
+    .brand {display:flex; gap:12px; align-items:center;}
+    .brand h1 {font-size:1.25rem; margin:0;}
+    .chip {display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:.9rem;}
+    .chip.ok {background:#0e7e6b; color:#fff;}
+    .chip.bad {background:#6b2230; color:#fff;}
+    .card {background:#2f2f48; border-radius:14px; padding:16px; margin:12px 0;}
+    .card h2 {margin:0 0 8px 0; font-size:1.1rem; color:#00c9a7;}
+    .grid {display:grid; grid-template-columns:1fr; gap:12px;}
+    @media (min-width: 720px){ .grid{grid-template-columns:1fr 1fr;} }
+    .btn {background:#00c9a7; color:#0d0d19; padding:10px 14px; border:none; border-radius:10px; cursor:pointer; font-weight:600;}
+    .btn[disabled]{opacity:.6; cursor:not-allowed;}
+    .muted {opacity:.8; font-size:.95rem;}
+    .list {margin:0; padding:0; list-style:none;}
+    .list li {display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #444; padding:10px 0;}
+    .kpi {display:flex; gap:16px; flex-wrap:wrap;}
+    .kpi .box {background:#383856; border-radius:10px; padding:10px 14px; min-width:160px;}
+    .note {background:#383856; padding:10px 12px; border-radius:10px; font-size:.95rem;}
+    .warn {color:#ffd166;}
+    .oktxt {color:#00e5bf;}
+    .small {font-size:.9rem;}
+    .rule-list {margin:8px 0 0 0; padding-inline-start:20px;}
+    .rule-list li {margin:6px 0;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <header class="dh">
+      <div class="brand">
+        <img src="logo.png" alt="logo" onerror="this.style.display='none'" width="36" height="36">
+        <div>
+          <h1>ڈیلی قرعہ — کمیٹی ایپ</h1>
+          <div id="userEmail" class="muted small">آپ کا اکاؤنٹ لوڈ ہو رہا ہے…</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn">لاگ آؤٹ</button>
+    </header>
+
+    <!-- Status / KPIs -->
+    <div class="card">
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:space-between;">
+        <div id="windowChip" class="chip bad">🚫 انویسٹمنٹ ونڈو بند</div>
+        <div class="kpi">
+          <div class="box">
+            <div class="small muted">قرعہ اندازی تک وقت</div>
+            <div id="drawCountdown" style="font-weight:700; font-size:1.2rem">--:--:--</div>
+          </div>
+          <div class="box">
+            <div class="small muted">آج کی آپ کی انٹریز</div>
+            <div><span id="todayCount" style="font-weight:700; font-size:1.2rem">0</span> / 10</div>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:10px">
+        ⏰ انویسٹمنٹ ٹائم: <b>رات 10:00 (PKT)</b> سے <b>شام 6:00 (PKT)</b> تک — قرعہ اندازی <b>شام 8:00 (PKT)</b>۔
+      </div>
+    </div>
+
+    <!-- Actions + Entries -->
+    <div class="grid">
+      <div class="card">
+        <h2>➕ کمیٹی انٹری (₨ 200)</h2>
+        <p class="muted small">
+          اس وقت آپ <b>روزانہ زیادہ سے زیادہ 10</b> انٹریز ڈال سکتے ہیں۔ ادائیگی فی الحال آف لائن تصدیق کے بعد فعال ہوگی۔
+        </p>
+        <button id="addEntryBtn" class="btn">انٹری شامل کریں (₨200)</button>
+        <div id="entryMsg" class="small" style="margin-top:8px;"></div>
+        <div class="note" style="margin-top:10px">
+          ℹ️ انٹری شامل کرنے پر اس کی حالت <b>“Verification pending”</b> ہوگی۔ تصدیق کے بعد آپ کے والٹ/اکاؤنٹ میں ظاہر ہوگی۔
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📃 آج کی آپ کی انٹریز</h2>
+        <ul id="entryList" class="list">
+          <li class="muted"><span>ریکارڈ لوڈ ہو رہا ہے…</span><span>—</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Rules -->
+    <div class="card">
+      <h2>📌 اصول و ضوابط</h2>
+      <ul class="rule-list">
+        <li>انویسٹمنٹ ونڈو: <b>10PM → 6PM (PKT)</b>۔</li>
+        <li>قرعہ اندازی: <b>روزانہ 8PM (PKT)</b> — ایپ میں لائیو دیکھا جا سکے گا (پلیس ہولڈر اسٹیج)۔</li>
+        <li>کم از کم کمیٹی: <b>₨200</b> (ایک انٹری = ₨200)۔</li>
+        <li>فی یوزر روزانہ زیادہ سے زیادہ <b>10</b> انٹریز۔</li>
+        <li>ونرز کی لسٹ میں نام/نمبر ماسک ہو کر ظاہر ہوں گے۔</li>
+        <li>ہر ودڈرا پر <b>10%</b> سروس فیس لاگو ہوگی۔</li>
+      </ul>
+    </div>
+
+    <!-- Winners (Placeholder) -->
+    <div class="card">
+      <h2>🏆 آج کے ونرز</h2>
+      <p class="muted">8PM پر لائیو ڈرا کے بعد یہاں نتائج ظاہر ہو جائیں گے۔</p>
+      <ul id="winnersList" class="list"></ul>
+    </div>
+  </div>
+
+  <!-- Logic -->
+  <script type="module">
+    // Firebase SDKs (same major version as your firebase-config.js)
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getDatabase, ref, get, set, push, serverTimestamp, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    // اگر firebase-config.js میں initializeApp ہو چکا ہے تو default app available ہے
+    const auth = getAuth();
+    const db = getDatabase();
+
+    // DOM refs
+    const userEmailEl = document.getElementById("userEmail");
+    const windowChip = document.getElementById("windowChip");
+    const drawCountdownEl = document.getElementById("drawCountdown");
+    const todayCountEl = document.getElementById("todayCount");
+    const addEntryBtn = document.getElementById("addEntryBtn");
+    const entryMsg = document.getElementById("entryMsg");
+    const entryList = document.getElementById("entryList");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // --- Time helpers (Pakistan time) ---
+    function nowInPK() {
+      // convert current UTC → Asia/Karachi (UTC+5, no DST)
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      return new Date(utc + (5 * 60 * 60 * 1000));
+    }
+    function pkDateStr(d = nowInPK()) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const da = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${da}`;
+    }
+    function depositWindowOpen(d = nowInPK()) {
+      const h = d.getHours(); // 0..23 in PKT
+      // Open from 22:00 → 23:59 and 00:00 → 17:59 (i.e., h>=22 OR h<18)
+      return (h >= 22 || h < 18);
+    }
+    function nextDrawTarget(d = nowInPK()) {
+      const t = new Date(d);
+      t.setHours(20,0,0,0); // 20:00 PKT today
+      if (d.getTime() >= t.getTime()) {
+        // move to tomorrow 20:00
+        t.setDate(t.getDate() + 1);
+      }
+      return t;
+    }
+    function startDrawCountdown() {
+      function tick() {
+        const dNow = nowInPK();
+        const target = nextDrawTarget(dNow);
+        const diff = target - dNow;
+        if (diff <= 0) {
+          drawCountdownEl.textContent = "00:00:00";
+          return;
+        }
+        const s = Math.floor(diff/1000);
+        const hh = String(Math.floor(s/3600)).padStart(2, "0");
+        const mm = String(Math.floor((s%3600)/60)).padStart(2, "0");
+        const ss = String(s%60).padStart(2, "0");
+        drawCountdownEl.textContent = `${hh}:${mm}:${ss}`;
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // --- UI status refresh ---
+    function refreshWindowChip() {
+      if (depositWindowOpen()) {
+        windowChip.classList.remove("bad");
+        windowChip.classList.add("ok");
+        windowChip.textContent = "✅ انویسٹمنٹ ونڈو کھلی ہے";
+        addEntryBtn.disabled = false;
+      } else {
+        windowChip.classList.remove("ok");
+        windowChip.classList.add("bad");
+        windowChip.textContent = "🚫 انویسٹمنٹ ونڈو بند";
+        addEntryBtn.disabled = true;
+      }
+    }
+
+    // --- Load today's entries for user ---
+    async function loadEntries(uid) {
+      const today = pkDateStr();
+      const entriesRef = ref(db, `users/${uid}/entries/${today}`);
+      onValue(entriesRef, (snap) => {
+        const val = snap.val();
+        entryList.innerHTML = "";
+        let count = 0;
+        if (val) {
+          Object.keys(val).forEach((k) => {
+            const e = val[k];
+            count++;
+            const li = document.createElement("li");
+            const when = e.localTime || "—";
+            const status = e.status || "pending";
+            li.innerHTML = `<span>انٹری #${count} — ₨${e.amount || 200} <span class="muted small">(${when})</span></span>
+                            <span class="small ${status==='pending_verification'?'warn':'oktxt'}">${status.replace('_',' ')}</span>`;
+            entryList.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.className = "muted";
+          li.innerHTML = "<span>آج ابھی کوئی انٹری نہیں۔</span><span>—</span>";
+          entryList.appendChild(li);
+        }
+        todayCountEl.textContent = String(count);
+        // limit 10
+        addEntryBtn.disabled = !depositWindowOpen() || count >= 10;
+      });
+    }
+
+    // --- Add entry (₨200) ---
+    async function addEntry(uid) {
+      entryMsg.textContent = "";
+      if (!depositWindowOpen()) {
+        entryMsg.innerHTML = "⛔ اس وقت انویسٹمنٹ ونڈو بند ہے۔ 10PM–6PM کے درمیان کوشش کریں۔";
+        return;
+      }
+      // check count
+      const today = pkDateStr();
+      const entriesRef = ref(db, `users/${uid}/entries/${today}`);
+      const snap = await get(entriesRef);
+      const count = snap.exists() ? Object.keys(snap.val()).length : 0;
+      if (count >= 10) {
+        entryMsg.innerHTML = "⚠️ آج آپ 10 انٹریز مکمل کر چکے ہیں۔";
+        return;
+      }
+
+      const localTime = nowInPK().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      const newRef = push(entriesRef);
+      await set(newRef, {
+        amount: 200,
+        status: "pending_verification",
+        createdAt: serverTimestamp(),
+        localTime
+      });
+
+      entryMsg.innerHTML = "✅ انٹری شامل ہو گئی۔ <b>Verification pending</b> — ادائیگی لنک تصدیق کے بعد فعال ہوگا۔";
+    }
+
+    // --- Auth state ---
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "signin.html";
+        return;
+      }
+      userEmailEl.textContent = `لاگ اِن: ${user.email}`;
+      refreshWindowChip();
+      startDrawCountdown();
+      loadEntries(user.uid);
+    });
+
+    // events
+    addEntryBtn.addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      await addEntry(user.uid);
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => location.href = "signin.html");
+    });
+
+    // keep window chip live
+    setInterval(refreshWindowChip, 30 * 1000);
+  </script>
+</body>
+</html>
