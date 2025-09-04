@@ -1,0 +1,56 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard – DailyQurrah</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="auth-check.js"></script>
+</head>
+<body class="app-body">
+  <div class="dashboard">
+    <div class="topbar">
+      <div class="logo">DailyQurrah</div>
+      <div class="nav-actions">
+        <button id="joinBtn" class="btn primary">آج کے ڈرا میں شامل ہوں</button>
+        <button id="withdrawBtn" class="btn ghost">ودڈرا</button>
+        <button id="logoutBtn" class="btn danger">لاگ آؤٹ</button>
+      </div>
+    </div>
+
+    <div class="statbar">
+      <div class="stat">
+        <div class="num" id="countdown">—</div>
+        <div class="label">ڈپازٹ کٹ آف (6PM)</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="todayCount">—</div>
+        <div class="label">آج کے پارٹیسپنٹس</div>
+      </div>
+      <div class="stat">
+        <div class="num">8:00 PM</div>
+        <div class="label">روزانہ قرعہ اندازی</div>
+      </div>
+    </div>
+
+    <div id="scrollingNames" class="scroll-box">نام لوڈ ہو رہے ہیں...</div>
+    <div id="winnerBox" class="winner-box"></div>
+
+    <div class="rules">
+      <h3>رولز و اصول</h3>
+      <ul>
+        <li>انویسٹمنٹ ونڈو: 10PM → 6PM اگلا دن</li>
+        <li>قرعہ اندازی: روزانہ 8PM</li>
+        <li>کم از کم کمیٹی 200، وننگ 2000</li>
+        <li>ہر 14 کے بعد 15واں پارٹیسپنٹ ونر (ڈیمو لاجک)</li>
+        <li>ڈپازٹ/ودڈرا فیچرز مستقبل میں اکاؤنٹ لنکنگ کے بعد فعال ہوں گے</li>
+      </ul>
+    </div>
+
+    <div id="dashMsg" class="note" style="display:none"></div>
+  </div>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
