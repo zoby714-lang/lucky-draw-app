@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyQurrah – کمیٹی ایپ</title>
+  <!-- ہمیشہ ./ استعمال کریں تاکہ CSS/JS صحیح لوڈ ہوں -->
+  <link rel="stylesheet" href="./style.css" />
+  <script type="module" src="./firebase-config.js"></script>
+</head>
+<body class="app-body">
+  <div class="auth-card fade-in">
+    <div class="brand">
+      <img src="https://img.icons8.com/?size=80&id=R3w3dC5O8v5H&format=png" alt="logo" />
+      <h1>DailyQurrah</h1>
+      <p class="muted">کمیٹی بیسڈ ایپ — محفوظ، سادہ، شفاف</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="statUsers">—</div>
+        <div class="stat-label">رجسٹرڈ ممبرز</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10AM–6PM</div>
+        <div class="stat-label">انویسٹمنٹ ونڈو</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8:00 PM</div>
+        <div class="stat-label">روزانہ قرعہ اندازی</div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="btn primary" href="./signup.html">نیا اکاؤنٹ بنائیں</a>
+      <a class="btn ghost" href="./signin.html">سائن اِن کریں</a>
+    </div>
+
+    <div class="info-card">
+      <h3>اہم معلومات</h3>
+      <ul>
+        <li>کم از کم کمیٹی: 200 روپے، 200 پر 2000 وننگ۔</li>
+        <li>ہر یوزر زیادہ سے زیادہ 10 کمیٹیاں ڈال سکتا ہے۔</li>
+        <li>ڈپازٹ/ودڈرا لنک کے ذریعے (ایزی پیسہ/جاز کیش انٹیگریشن بعد میں)۔</li>
+        <li>سروس فیس: 10% (ونر ودڈرا پر)۔</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { app } from './firebase-config.js';
+    const db = getFirestore(app);
+
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "app-meta", "metrics"));
+        const total = snap.exists() ? (snap.data().usersCount || "—") : "—";
+        document.getElementById("statUsers").textContent = total;
+      } catch(e){ /* silent */ }
+    })();
+  </script>
+</body>
+</html>
